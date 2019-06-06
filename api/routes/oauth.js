@@ -1,16 +1,14 @@
-"use strict";
+// https://alisproject.github.io/oauth2/authorization-url/#%E6%A6%82%E8%A6%81
 const base64url = require("base64url");
 const sha256 = require("js-sha256");
+
+const app = require("../util/app");
 
 const alis_oauth_base_url = "https://alis.to/oauth-authenticate";
 const code_verifier = get_code_verifier();
 const code_challenge = get_code_challenge(code_verifier);
 const client_id = process.env.CLIENT_ID;
-const client_secret = process.env.CLIENT_SECRET;
 const redirect_uri = process.env.REDIRECT_URI;
-
-console.log(`code_verifier = ${code_verifier}`);
-console.log(`code_challenge = ${code_challenge}`);
 
 function get_code_challenge(str) {
   const hash = sha256.arrayBuffer(str);
@@ -26,7 +24,10 @@ function get_code_verifier() {
   return base64url(buf);
 }
 
-module.exports = (req, res) => {
+app.get("*", (req, res) => {
+  req.session.code_verifier = code_verifier;
   const oauthUrl = `${alis_oauth_base_url}?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=read&code_challenge=${code_challenge}`;
-  res.end(oauthUrl);
-};
+  res.status(200).send(oauthUrl);
+});
+
+module.exports = app;

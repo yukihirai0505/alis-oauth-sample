@@ -4,14 +4,13 @@
   "alias": "alis-oauth-sample.now.sh",
   "builds": [
     { "src": "www/**/*", "use": "@now/static" },
-    { "src": "api/**/*.js", "use": "@now/node" }
+    { "src": "api/routes/**/*.js", "use": "@now/node" }
   ],
   "env": {
     "CLIENT_ID": "@client-id",
     "CLIENT_SECRET": "@client-secret",
-    "REDIRECT_URI": "@redirect-uri"
+    "REDIRECT_URI": "@redirect-uri",
+    "COOK_KEY": "@cook-key"
   },
-  "routes": [
-    { "src": "/", "dest": "www/index.html" }
-  ]
+  "routes": [{ "src": "/", "dest": "www/index.html" }]
 }
