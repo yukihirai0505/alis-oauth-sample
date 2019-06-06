@@ -7,7 +7,7 @@
   <body>
     <h1>Welcome to ALIS OAuth Sample</h1>
     <h3>OAuth URL is:</h3>
-    <p class="date js-date">Loading url...</p>
+    <a id="oauth-url" href="">Loading url...</a>
 
     <script>
       function main() {
@@ -15,8 +15,10 @@
           .then(function(response) {
             return response.text();
           })
-          .then(function(date) {
-            document.querySelector(".js-date").textContent = date;
+          .then(function(oauthUrl) {
+            const aLink = document.querySelector("#oauth-url");
+            aLink.href = oauthUrl;
+            aLink.innerText = oauthUrl;
           });
       }
 
