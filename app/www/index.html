@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ALIS OAuth Sample</title>
+    <link rel="stylesheet" href="/www/style.css" />
+  </head>
+  <body>
+    <h1>Welcome to ALIS OAuth Sample</h1>
+    <h3>OAuth URL is:</h3>
+    <p class="date js-date">Loading url...</p>
+
+    <script>
+      function main() {
+        return fetch("/api/oauth.js")
+          .then(function(response) {
+            return response.text();
+          })
+          .then(function(date) {
+            document.querySelector(".js-date").textContent = date;
+          });
+      }
+
+      main();
+    </script>
+  </body>
+</html>
