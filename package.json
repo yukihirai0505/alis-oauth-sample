@@ -4,7 +4,6 @@
     "cookie-session": "^2.0.0-beta.3",
     "express": "^4.17.1",
     "js-sha256": "^0.9.0",
-    "moment": "^2.24.0",
     "request": "^2.88.0"
   }
 }
