@@ -10,6 +10,8 @@ Create Now account => https://zeit.co/now
 And install `now` command
 
 ```
+$ git clone https://github.com/yukihirai0505/alis-oauth-sample.git
+$ cd alis-oauth-sample
 $ yarn
 $ now secret add client-id "your-alis-client-id"
 $ now secret add client-secret "your-alis-client-secret"
