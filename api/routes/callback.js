@@ -5,25 +5,52 @@ const app = require("../util/app");
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 const redirect_uri = process.env.REDIRECT_URI;
+const alis_oauth_base_url = "https://alis.to/oauth2";
 
 app.get("*", (req, res) => {
   const { code_verifier } = req.session;
   const { code } = req.query;
-  const alis_oauth_base_url = "https://alis.to/oauth2/token";
+
   const token = new Buffer(`${client_id}:${client_secret}`).toString("base64");
   var clientServerOptions = {
-    uri: alis_oauth_base_url,
+    uri: `${alis_oauth_base_url}/token`,
     body: `grant_type=authorization_code&code=${code}&redirect_uri=${redirect_uri}&code_verifier=${code_verifier}`,
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${token}`
+      Authorization: `Basic ${token}`,
+      "Content-Type": "application/x-www-form-urlencoded"
     }
   };
 
   request.post(clientServerOptions, function(error, response, body) {
     console.log(body);
-    res.status(200).send(body);
+    const { access_token } = JSON.parse(body);
+    request.get(
+      {
+        uri: "https://alis.to/oauth2api/me/info",
+        method: "GET",
+        headers: {
+          Authorization: `${access_token}`,
+          "Content-Type": "application/json"
+        }
+      },
+      function(error, response, body) {
+        const { user_id } = JSON.parse(body);
+        res
+          .status(200)
+          .send(`Hi ${user_id}!<br/>Your Access Token is: ${access_token}`);
+      }
+    );
+
+    async function get_sig_key(kid) {
+      const response = await fetch(jwk_url);
+      const response_json = await response.json();
+      for (const k of response_json.keys) {
+        if (k.kid === kid) {
+          return jwkToPem(k);
+        }
+      }
+    }
   });
 });
 
