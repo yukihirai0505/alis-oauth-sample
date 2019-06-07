@@ -27,6 +27,8 @@ $ now dev .
 
 # Deploy
 
+Edit `"alias": "alis-oauth-sample.now.sh"` inside the `now.json` file to your preferred URL before deploying it.
+
 ```
 $ now .
 ```
